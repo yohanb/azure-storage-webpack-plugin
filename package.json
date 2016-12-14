@@ -1,6 +1,6 @@
 {
   "name": "azure-storage-webpack-plugin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Webpack plugin that uploads webpack assets to a Azure storage account.",
   "main": "index.js",
   "repository": "yohanb/azure-storage-webpack-plugin.git",
