@@ -28,7 +28,7 @@ function apply(options, compiler) {
     });
 }
 
-function AzureCdnDeployWebpackPlugin(options) {
+function AzureStorageDeployWebpackPlugin(options) {
 
     // Simple pattern to be able to easily access plugin
     // options when the apply prototype is called
