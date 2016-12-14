@@ -14,7 +14,7 @@ function apply(options, compiler) {
                 assets.forEach(function(asset) {
                     blobService.createBlockBlobFromText(options.container.name, asset.filePath, asset.fileContent, function(error, result, response) {
                     if(!error){
-                        console.log("successfully uploaded '" + asset.filePath + "to container '" + options.container.name + "'");
+                        console.log("successfully uploaded '" + asset.filePath + "' to container '" + options.container.name + "'");
                     } else {
                         console.error(error);
                     }
