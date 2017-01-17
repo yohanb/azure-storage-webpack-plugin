@@ -12,7 +12,7 @@ function apply(options, compiler) {
             if(!error){
                 var assets = utils.getAssets(compilation);
                 assets.forEach(function(asset) {
-                    blobService.createBlockBlobFromText(options.container.name, asset.filePath, asset.fileContent, function(error, result, response) {
+                    blobService.createBlockBlobFromText(options.container.name, asset.filePath, asset.fileContent, { contentSettings: options.metadata }, function(error, result, response) {
                     if(!error){
                         console.log("successfully uploaded '" + asset.filePath + "' to container '" + options.container.name + "'");
                     } else {
