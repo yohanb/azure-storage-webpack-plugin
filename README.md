@@ -27,7 +27,13 @@ var webpackConfig = {
   },
   plugins: [new AzureStorageWebpackPlugin({
     blobService: ['storageaccountname','key'],
-    container: { name: 'containername', options: { publicAccessLevel : 'blob' }}
+    container: { name: 'containername', options: { publicAccessLevel : 'blob' }},
+    
+    // Optionally set cache control and content type header
+    metadata: {
+      cacheControl: 'public, max-age=31536000, s-maxage=31536000',
+      contentType: 'application/javascript'
+    }
 })]
 };
 ```
