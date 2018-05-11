@@ -1,6 +1,8 @@
 var azure = require('azure-storage');
-
 var utils = require('./lib/utils');
+var md5File = require('md5-file');
+
+var assetChecksums = {};
 
 function apply(options, compiler) {
   // When assets are being emmited (not yet on file system)
@@ -14,15 +16,33 @@ function apply(options, compiler) {
 
       function handleFiles(files) {
         files.forEach(function(file) {
-          blobService.createBlockBlobFromLocalFile(options.container.name, file.name, file.path, { contentSettings: options.metadata }, function(error, result, response) {
-            if(error) {
+
+          md5File(file.path, function(error, md5sum) {
+            if (error) {
+              console.log("Error computing md5sum for '" + file.path + "'");
               console.error(error);
               return;
             }
 
-            if (!process.env.SILENCE_UPLOADS) {
-              console.log("successfully uploaded '" + file.path + "' to container '" + options.container.name + "'");
+            var lastChecksum = assetChecksums[file.path];
+            if (!process.env.ALWAYS_UPLOAD && lastChecksum === md5sum) {
+              console.log("skipping upload of '" + file.path + "' (current MD5 checksum matches last uploaded MD5 checksum)");
+              return;
             }
+
+            var opts = { contentSettings: options.metadata };
+            blobService.createBlockBlobFromLocalFile(options.container.name, file.name, file.path, opts, function(error, result, response) {
+              if(error) {
+                console.error(error);
+                return;
+              }
+
+              assetChecksums[file.path] = md5sum;
+
+              if (!process.env.SILENCE_UPLOADS) {
+                console.log("successfully uploaded '" + file.path + "' to container '" + options.container.name + "'");
+              }
+            });
           });
         });
       }
