@@ -1,4 +1,5 @@
 var azure = require('azure-storage');
+var mime = require('mime');
 var utils = require('./lib/utils');
 var md5File = require('md5-file');
 
@@ -30,7 +31,10 @@ function apply(options, compiler) {
               return;
             }
 
-            var opts = { contentSettings: options.metadata };
+            var contentSettings = Object.assign({
+              contentType: mime.getType(file.path)
+            }, options.metadata);
+            var opts = { contentSettings: contentSettings };
             blobService.createBlockBlobFromLocalFile(options.container.name, file.name, file.path, opts, function(error, result, response) {
               if(error) {
                 console.error(error);
