@@ -35,7 +35,9 @@ function apply(options, compiler) {
               contentType: mime.getType(file.path)
             }, options.metadata);
             var opts = { contentSettings: contentSettings };
-            blobService.createBlockBlobFromLocalFile(options.container.name, file.name, file.path, opts, function(error, result, response) {
+            var name = options.path ? options.path + "/" + file.name : file.name;
+
+            blobService.createBlockBlobFromLocalFile(options.container.name, name, file.path, opts, function(error, result, response) {
               if(error) {
                 console.error(error);
                 return;
