@@ -2,6 +2,12 @@ var azure = require('azure-storage');
 
 var utils = require('./lib/utils');
 
+function getContentSettings(metadata, filePath) {
+    var contentType = metadata.contentType;
+    metadata.contentType = typeof contentType === 'function' ? contentType(filePath) : contentType;
+    return metadata;
+}
+
 function apply(options, compiler) {
 
     // When assets are being emmited (not yet on file system)
@@ -12,7 +18,7 @@ function apply(options, compiler) {
             if(!error){
                 var assets = utils.getAssets(compilation);
                 assets.forEach(function(asset) {
-                    blobService.createBlockBlobFromText(options.container.name, asset.filePath, asset.fileContent, { contentSettings: options.metadata }, function(error, result, response) {
+                    blobService.createBlockBlobFromText(options.container.name, asset.filePath, asset.fileContent, { contentSettings: getContentSettings(options.metadata, asset.filePath) }, function(error, result, response) {
                     if(!error){
                         console.log("successfully uploaded '" + asset.filePath + "' to container '" + options.container.name + "'");
                     } else {
