@@ -38,6 +38,8 @@ var webpackConfig = {
 };
 ```
 
+This will upload the `dist/widget.js` file to the specified container
+
 ```javascript
 const AzureStorageWebpackPlugin = require('azure-storage-webpack-plugin');
 const path = require('path');
@@ -85,6 +87,7 @@ const webpackConfig = {
 
 This will upload the `dist/widget.js` file to the specified container with the contentType `application/javascript`.
 This will upload the `dist/widgetCss.css` file to the specified container with the contentType `text/css`.
+
 Files contained in folders will also be uploaded following the respective folder structure.  
 
 **NOTE:** This plugin is not intented to be used when in a _hot-reloading_ Webpack setup.
