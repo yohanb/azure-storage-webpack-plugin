@@ -2,10 +2,13 @@ var azure = require('azure-storage');
 
 var utils = require('./lib/utils');
 
-function getContentSettings(metadata, filePath) {
-    var contentType = metadata.contentType;
-    metadata.contentType = typeof contentType === 'function' ? contentType(filePath) : contentType;
-    return metadata;
+const getContentSettings = (metadata = {}, filePath) => {
+    const { contentType = '' } = metadata;
+    return {
+        ...metadata,
+        contentType: typeof contentType === 'function' ? contentType(filePath)
+            : contentType
+    }
 }
 
 function apply(options, compiler) {
