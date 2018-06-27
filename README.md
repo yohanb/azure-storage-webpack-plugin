@@ -38,7 +38,52 @@ var webpackConfig = {
 };
 ```
 
-This will upload the `dist/bundle.js` file to the specified container.  
+```javascript
+const AzureStorageWebpackPlugin = require('azure-storage-webpack-plugin');
+
+const getContentType = (fileName = '') => {
+    const fileExt =  path.extname(fileName);
+    switch(fileExt) {
+        case '.js': {
+            return 'application/javascript';
+        }
+        case '.css': {
+            return 'text/css';
+        }
+        default: {
+            return ''
+        }
+    }
+};
+
+
+const webpackConfig = {
+  entry: {
+    widget: 'js/path',
+    widgetCss: 'css/path'
+  },
+  output: {
+    path: 'dist',
+    filename: 'js/[name].js'
+  },
+  plugins: [
+    new AzureStorageWebpackPlugin({
+        blobService: ['storageaccountname','key'],
+        container: { name: 'containername', options: { publicAccessLevel : 'blob' }},
+        
+        // Optionally set cache control and content type header
+        metadata: {
+          cacheControl: 'public, max-age=31536000, s-maxage=31536000',
+          contentType: getContentType
+        }
+    }),
+    // CSS Extraction Plugin from js
+  ]
+};
+```
+
+This will upload the `dist/widget.js` file to the specified container with the contentType `application/javascript`.
+This will upload the `dist/widgetCss.css` file to the specified container with the contentType `text/css`.
 Files contained in folders will also be uploaded following the respective folder structure.  
 
 **NOTE:** This plugin is not intented to be used when in a _hot-reloading_ Webpack setup.
