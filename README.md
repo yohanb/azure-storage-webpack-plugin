@@ -38,7 +38,7 @@ var webpackConfig = {
 };
 ```
 
-This will upload the `dist/widget.js` file to the specified container
+This will upload the `dist/bundle.js` file to the specified container
 
 ```javascript
 const AzureStorageWebpackPlugin = require('azure-storage-webpack-plugin');
