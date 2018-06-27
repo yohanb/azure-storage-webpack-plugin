@@ -40,6 +40,7 @@ var webpackConfig = {
 
 ```javascript
 const AzureStorageWebpackPlugin = require('azure-storage-webpack-plugin');
+const path = require('path');
 
 const getContentType = (fileName = '') => {
     const fileExt =  path.extname(fileName);
